@@ -55,6 +55,11 @@ int pop(struct node **top, int *size) {
 void multipopWithoutCount(struct node **top, int *size) {
     struct node *p;
     p = *top;
+
+    if (*top == NULL) {
+        printf("\nStack underflow! Stack is empty.\n");
+        return;
+    }
     
     while (p != NULL) {
         *top = p->next;
@@ -73,6 +78,10 @@ void multipopWithCount(struct node **top, int *size, int noOfElementsToPop) {
     int i = 0;
 
     if (noOfElementsToPop == 0) {
+        printf("\nNo count specified. Nothing to pop.\n");
+        return;
+    } else if (*top == NULL) {
+        printf("\nStack underflow! Stack is empty.\n");
         return;
     } else if (noOfElementsToPop > *size) {
         multipopWithoutCount(top, size);
@@ -94,6 +103,16 @@ void multipopWithCount(struct node **top, int *size, int noOfElementsToPop) {
         i++;
     }
     printf("\n");
+}
+
+// Prints the top of the stack
+void peek(struct node **top) {
+    if (*top == NULL) {
+        printf("\nStack is empty. Nothing to print.\n");
+        return;
+    }
+
+    printf("\nTop of the stack: %d\n", (*top) -> data);
 }
 
 // Prints the elements in the stack
@@ -121,10 +140,9 @@ int main() {
     int noOfElementsToPop;
     struct node *top = NULL;
 
-    printf("\nThe stack operations are as follows:\n");
-    printf("1. Push\n2. Pop\n3. Multipop with specific count\n4. Multipop without count\n5. Print stack\n6. Exit\n");
-
     do {
+        printf("\nThe stack operations are as follows:\n");
+        printf("1. Push\n2. Pop\n3. Multipop with specific count\n4. Multipop without count\n5. Peek\n6. Print stack\n7. Exit\n");
         printf("\nChoose an operation to perform: ");
         scanf("%d", &choice);
 
@@ -162,13 +180,18 @@ int main() {
                 multipopWithoutCount(&top, &size);
                 break;
 
-            // Print the elements in the stack
+            // Perform PEEK operation
             case 5:
+                peek(&top);
+                break;
+
+            // Print the elements in the stack
+            case 6:
                 printStack(&top);
                 break;
 
             // Exit the program
-            case 6:
+            case 7:
                 exit(0);
                 break;
 
@@ -177,7 +200,7 @@ int main() {
                 printf("\nInvalid choice! Select a valid choice.\n");
                 break;
         }
-    } while (choice != 6);
+    } while (choice != 7);
 
     return 0;
 }

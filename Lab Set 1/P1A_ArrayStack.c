@@ -19,6 +19,11 @@ void push(int array[], int size, int *top, int element) {
 void pushRandom(int array[], int size, int *top) {
     int randomNumber;
 
+    if (*top == size - 1) {
+        printf("\nStack overflow! Stack has reached it's limit.\n");
+        return;
+    }
+
     while (*top < size - 1) {
         randomNumber = rand() % 100;
         push(array, size, top, randomNumber);
@@ -40,6 +45,11 @@ int pop(int array[], int *top) {
 
 // Pops all the elements from the stack
 void multipopWithoutCount(int *top) {
+    if (*top == -1) {
+        printf("\nStack underflow! Stack is empty.\n");
+        return;
+    }
+
     *top = -1;
     printf("\nPopped all the elements from the stack.\n");
 }
@@ -49,8 +59,12 @@ void multipopWithCount(int array[], int *top, int noOfElementsToPop) {
     int i = 0;
 
     if (noOfElementsToPop == 0) {
+        printf("\nNo count specified. Nothing to pop.\n");
         return;
-    } else if (noOfElementsToPop > *top + 1) {
+    } else if (*top == -1) {
+        printf("\nStack underflow! Stack is empty.\n");
+        return;
+    }else if (noOfElementsToPop > *top + 1) {
         multipopWithoutCount(top);
         return;
     }
@@ -61,6 +75,16 @@ void multipopWithCount(int array[], int *top, int noOfElementsToPop) {
         i++;
     }
     printf("\n");
+}
+
+// Prints the top of the stack
+void peek(int array[], int *top) {
+    if (*top == -1) {
+        printf("\nStack is empty. Nothing to print.\n");
+        return;
+    }
+
+    printf("\nTop of the stack: %d\n", array[*top]);
 }
 
 // Prints the elements in the stack
@@ -97,10 +121,9 @@ int main() {
 
     int *array = malloc(size * sizeof(int));
 
-    printf("\nThe stack operations are as follows:\n");
-    printf("1. Push\n2. Push random elements based on limit specified\n3. Pop\n4. Multipop with specific count\n5. Multipop without count\n6. Print stack\n7. Exit\n");
-
     do {
+        printf("\nThe stack operations are as follows:\n");
+        printf("1. Push\n2. Push random elements based on limit specified\n3. Pop\n4. Multipop with specific count\n5. Multipop without count\n6. Peek\n7. Print stack\n8. Exit\n");
         printf("\nChoose an operation to perform: ");
         scanf("%d", &choice);
 
@@ -143,13 +166,18 @@ int main() {
                 multipopWithoutCount(&top);
                 break;
 
-            // Print the elements in the stack
+            // Perform PEEK operation
             case 6:
+                peek(array, &top);
+                break;
+
+            // Print the elements in the stack
+            case 7:
                 printStack(array, &top);
                 break;
 
             // Exit the program
-            case 7:
+            case 8:
                 exit(0);
                 break;
 
@@ -158,7 +186,7 @@ int main() {
                 printf("\nInvalid choice! Select a valid choice.\n");
                 break;
         }
-    } while (choice != 7);
+    } while (choice != 8);
 
     free(array);
 

@@ -111,7 +111,7 @@ int main() {
     // Seed for random number generation
     srand(time(NULL));
 
-    printf("Choose the limit for the number of elements in the stack: ");
+    printf("\nChoose the limit for the number of elements in the stack: ");
     scanf("%d", &size);
 
     if (size == 0) {

@@ -78,8 +78,8 @@ void multipopWithoutCount(struct node **top, int *size) {
 void multipopWithCount(struct node **top, int *size, int noOfElementsToPop) {
     int i = 0;
 
-    if (noOfElementsToPop == 0) {
-        printf("\nNo count specified. Nothing to pop.\n");
+    if (noOfElementsToPop <= 0) {
+        printf("\nCount must be greater than 0. Nothing to pop.\n");
         return;
     } else if (*top == NULL) {
         printf("\nStack underflow! Stack is empty.\n");

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <limits.h>
+#include <windows.h>
 
 // Pushes an element onto the stack
 void push(int array[], int size, int *top, int element) {
@@ -58,8 +59,8 @@ void multipopWithoutCount(int *top) {
 void multipopWithCount(int array[], int *top, int noOfElementsToPop) {
     int i = 0;
 
-    if (noOfElementsToPop == 0) {
-        printf("\nNo count specified. Nothing to pop.\n");
+    if (noOfElementsToPop <= 0) {
+        printf("\nCount must be greater than 0. Nothing to pop.\n");
         return;
     } else if (*top == -1) {
         printf("\nStack underflow! Stack is empty.\n");
@@ -107,6 +108,11 @@ int main() {
     int element;
     int poppedElement;
     int noOfElementsToPop;
+    LARGE_INTEGER start, end, freq;
+    double timeTaken;
+
+    // Gets the counter's frequency, i.e. how many counter ticks occur per second
+    QueryPerformanceFrequency(&freq);
 
     // Seed for random number generation
     srand(time(NULL));
@@ -114,12 +120,17 @@ int main() {
     printf("\nChoose the limit for the number of elements in the stack: ");
     scanf("%d", &size);
 
-    if (size == 0) {
-        printf("Size of the stack must greater than 0.\n");
+    if (size <= 0) {
+        printf("Size of the stack must be greater than 0.\n");
         return 0;
     }
 
     int *array = malloc(size * sizeof(int));
+
+    if (array == NULL) {
+        printf("Array memory allocation failed.\n");
+        return 1;
+    }
 
     do {
         printf("\nThe stack operations are as follows:\n");
@@ -138,7 +149,19 @@ int main() {
 
             // Perform PUSH operation of random elements based on the limit specified
             case 2:
+                // Records the counter value before the operation
+                QueryPerformanceCounter(&start);
+                
                 pushRandom(array, size, &top);
+                
+                // Records the counter value after the operation
+                QueryPerformanceCounter(&end);
+
+                // Converts the difference in ticks into seconds
+                timeTaken = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
+
+                printf("\nOperation Execution Stats:\n");
+                printf("\nPUSH random numbers operation took %.9f seconds to execute.\n", timeTaken);
                 break;
 
             // Perform POP operation
@@ -158,12 +181,26 @@ int main() {
                 printf("\nEnter the count of elements to be popped: ");
                 scanf("%d", &noOfElementsToPop);
 
+                QueryPerformanceCounter(&start);
                 multipopWithCount(array, &top, noOfElementsToPop);
+                QueryPerformanceCounter(&end);
+
+                timeTaken = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
+
+                printf("\nOperation Execution Stats:\n");
+                printf("\nMULTIPOP operation with a specific count took %.9f seconds to execute.\n", timeTaken);
                 break;
 
             // Perform MULTIPOP operation without a specific count
             case 5:
+                QueryPerformanceCounter(&start);
                 multipopWithoutCount(&top);
+                QueryPerformanceCounter(&end);
+
+                timeTaken = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
+
+                printf("\nOperation Execution Stats:\n");
+                printf("\nMULTIPOP operation without a specific count took %.9f seconds to execute.\n", timeTaken);
                 break;
 
             // Perform PEEK operation
@@ -178,8 +215,8 @@ int main() {
 
             // Exit the program
             case 8:
+                free(array);
                 exit(0);
-                break;
 
             // Default case for invalid input
             default:
@@ -187,8 +224,6 @@ int main() {
                 break;
         }
     } while (choice != 8);
-
-    free(array);
 
     return 0;
 }

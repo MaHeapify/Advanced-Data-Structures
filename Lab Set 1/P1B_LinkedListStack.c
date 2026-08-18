@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <windows.h>
 
 // Custom datatype to hold the linked list node data
 struct node {
@@ -139,6 +140,10 @@ int main() {
     int poppedElement;
     int noOfElementsToPop;
     struct node *top = NULL;
+    LARGE_INTEGER start, end, freq;
+    double timeTaken;
+
+    QueryPerformanceFrequency(&freq);
 
     do {
         printf("\nThe stack operations are as follows:\n");
@@ -172,12 +177,26 @@ int main() {
                 printf("\nEnter the count of elements to be popped: ");
                 scanf("%d", &noOfElementsToPop);
 
+                QueryPerformanceCounter(&start);
                 multipopWithCount(&top, &size, noOfElementsToPop);
+                QueryPerformanceCounter(&end);
+
+                timeTaken = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
+
+                printf("\nOperation Execution Stats:\n");
+                printf("\nMULTIPOP operation with a specific count took %.9f seconds to execute.\n", timeTaken);
                 break;
 
             // Perform MULTIPOP operation without a specific count
             case 4:
+                QueryPerformanceCounter(&start);
                 multipopWithoutCount(&top, &size);
+                QueryPerformanceCounter(&end);
+
+                timeTaken = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
+
+                printf("\nOperation Execution Stats:\n");
+                printf("\nMULTIPOP operation without a specific count took %.9f seconds to execute.\n", timeTaken);
                 break;
 
             // Perform PEEK operation
@@ -193,7 +212,6 @@ int main() {
             // Exit the program
             case 7:
                 exit(0);
-                break;
 
             // Default case for invalid input
             default:

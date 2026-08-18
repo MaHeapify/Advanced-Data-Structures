@@ -1,47 +1,48 @@
-// Write a program to implement quick sort.
+// Write a program to implement heap sort (using max heap).
 
 #include <stdio.h>
 #include <time.h>
 #include <windows.h>
 
-// Swap two numbers
-void swap(int data[], int i, int j) {
-    int temp = data[i];
-    data[i] = data[j];
-    data[j] = temp;
-}
+// Build the max heap using the array elements
+void heapify(int data[], int size, int i) {
+    int largest = i;
+    int leftChild = 2 * i + 1;
+    int rightChild = 2 * i + 2;
 
-// Perform partition algorithm
-int partition(int data[], int i, int j) {
-    int x = data[i];
-    int y = i;
-
-    for (int k = i + 1; k <= j; k++) {
-        if (data[k] <= x) {
-            y++;
-            swap(data, y , k);
-        }
+    if (leftChild < size && data[leftChild] > data[largest]) {
+        largest = leftChild;
     }
 
-    swap(data, y, i);
+    if (rightChild < size && data[rightChild] > data[largest]) {
+        largest = rightChild;
+    }
 
-    return y;
+    if (largest != i) {
+        int temp = data[i];
+        data[i] = data[largest];
+        data[largest] = temp;
+
+        heapify(data, size, largest);
+    }
 }
 
-// Perform quick sort algorithm
-void quickSort(int data[], int i, int j) {
-    int m;
+// Perform heap sort algorithm
+void heapSort(int data[], int size) {
+    // Build max heap
+    for (int i = size/2 - 1; i >= 0; i--) {
+        heapify(data, size, i);
+    }
 
-    while (i <= j) {
-        m = partition(data, i, j);
-        
-        if (m - i > j - m) {
-            quickSort(data, m + 1, j);
-            j = m - 1;
-        } else {
-            quickSort(data, i, m - 1);
-            i = m + 1;
-        }
+    // Extract elements one by one
+    for (int i = size - 1; i > 0; i--) {
+        // Move max element to the end
+        int temp = data[0];
+        data[0] = data[i];
+        data[i] = temp;
+
+        // Restore max heap
+        heapify(data, i, 0);
     }
 }
 
@@ -64,7 +65,7 @@ int main() {
 
     // Seed for random number generation
     srand(time(NULL));
-    
+
     printf("\nEnter the number of elements in the array: ");
     scanf("%d", &size);
 
@@ -74,7 +75,7 @@ int main() {
     }
 
     int data[size];
-    
+
     printf("\nWould you like to randomly populate elements in the array? [Press 'Y' or 'y' for Yes, otherwise treated as No]: ");
     scanf(" %c", &response);
 
@@ -89,23 +90,23 @@ int main() {
         scanf("%d", &data[i]);
     }
 
-    printf("\nThe elements in the array before applying quick sort are as follows: ");
+    printf("\nThe elements in the array before applying heap sort are as follows: ");
     display(data, size);
 
     QueryPerformanceCounter(&start);
 
-    // Apply quick sort algorithm
-    quickSort(data, 0, size - 1);
+    // Apply heap sort algorithm
+    heapSort(data, size);
     
     QueryPerformanceCounter(&end);
 
-    printf("\nThe elements in the array after applying quick sort are as follows: ");
+    printf("\nThe elements in the array after applying heap sort are as follows: ");
     display(data, size);
     
     timeTaken = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
 
     printf("\nAlgorithm Execution Stats:\n");
-    printf("\nQuick Sort algorithm took %.9f seconds to execute.\n", timeTaken);
+    printf("\nHeap Sort algorithm took %.9f seconds to execute.\n", timeTaken);
 
     return 0;
 }

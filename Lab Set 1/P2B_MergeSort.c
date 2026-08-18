@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h>
 
 // Custom datatype to hold the linked list node data
 struct node {
@@ -125,12 +126,21 @@ int main() {
     int i = 0;
     struct node *s = NULL;
     struct node *p = NULL;
+    LARGE_INTEGER start, end, freq;
+    double timeTaken;
+
+    QueryPerformanceFrequency(&freq);
 
     // Seed for random number generation
     srand(time(NULL));
 
     printf("\nEnter the number of elements you would like to insert in the linked list: ");
     scanf("%d", &size);
+
+    if (size <= 0) {
+        printf("Linked list size must be greater than 0.\n");
+        return 1;
+    }
 
     printf("\nWould you like to randomly populate elements in the linked list? [Press 'Y' or 'y' for Yes, otherwise treated as No]: ");
     scanf(" %c", &response);
@@ -151,11 +161,20 @@ int main() {
     printf("\nThe elements in the linked list before applying merge sort are as follows: ");
     display(s);
 
+    QueryPerformanceCounter(&start);
+
     // Apply merge sort algorithm
     p = mergeSort(s);
+    
+    QueryPerformanceCounter(&end);
 
     printf("\nThe elements in the linked list after applying merge sort are as follows: ");
     display(p);
+
+    timeTaken = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
+
+    printf("\nAlgorithm Execution Stats:\n");
+    printf("\nMerge Sort algorithm took %.9f seconds to execute.\n", timeTaken);
 
     return 0;
 }

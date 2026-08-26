@@ -1,5 +1,5 @@
 /*
-    Write a C program to implement a dynamic table and calculate it's amortized cost using aggregate analysis
+    Write a C program to implement a dynamic table and calculate it's amortized cost using aggregate analysis.
 */
 
 #include <stdio.h>

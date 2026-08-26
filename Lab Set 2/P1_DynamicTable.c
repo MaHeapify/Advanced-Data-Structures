@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 // Doubles the capacity of the dynamic table
 void doubleCapacity(int **array, int *totalSize, int currentSize) {
@@ -36,9 +37,10 @@ void doubleCapacity(int **array, int *totalSize, int currentSize) {
 
 // Display the current and total size of the dynamic table
 void displaySize(int currentSize, int totalSize) {
-    printf("Current size of the dynamic table is %d and total size is %d.\n", currentSize, totalSize);
+    printf("\nCurrent size of the dynamic table is %d and total size is %d.\n", currentSize, totalSize);
 }
 
+// Insert element into the dynamic table
 void insertIntoDynamicTable(int element, int *totalSize, int *currentSize, int **array) {
     // Check if the dynamic table is full and double the capacity
     if (*currentSize == *totalSize) {
@@ -59,7 +61,7 @@ void printDynamicTable(int currentSize, int totalSize, int array[]) {
         return;
     }
 
-    printf("\nDynamic table contents are: ");
+    printf("\nDynamic table contents are:\n");
     for (int i = 0; i < currentSize; i++) {
         printf("%d ", array[i]);
     }
@@ -72,7 +74,10 @@ int main() {
     int element;
     int totalSize = 1;
     int currentSize = 0;
+    int numberOfRandomElements;
     int *array = malloc(totalSize * sizeof(int));
+
+    srand(time(NULL));
 
     if (array == NULL) {
         printf("\nArray memory allocation failed!\n");
@@ -81,7 +86,7 @@ int main() {
     
     do {
         printf("\nEnter the operation you want to perform on the dynamic table:\n");
-        printf("1. Insert an element\n2. Display the dynamic table\n3. Exit\n");
+        printf("1. Insert an element\n2. Insert random elements\n3. Display the dynamic table\n4. Exit\n");
         printf("\nChoose an operation to perform: ");
         scanf("%d", &choice);
 
@@ -94,10 +99,22 @@ int main() {
                 break;
 
             case 2:
-                printDynamicTable(currentSize, totalSize, array);
+                printf("\nEnter the number of random elements you want to insert: ");
+                scanf("%d", &numberOfRandomElements);
+
+                for (int i = 0; i < numberOfRandomElements; i++) {
+                    element = rand() % 1000;
+
+                    insertIntoDynamicTable(element, &totalSize, &currentSize, &array);
+                }
+
                 break;
 
             case 3:
+                printDynamicTable(currentSize, totalSize, array);
+                break;
+
+            case 4:
                 free(array);
                 exit(0);
 
@@ -105,7 +122,7 @@ int main() {
                 printf("\nInvalid choice! Select a valid choice.\n");
                 break;
         }
-    } while (choice != 3);
+    } while (choice != 4);
 
     return 0;
 }

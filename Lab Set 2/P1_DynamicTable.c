@@ -107,7 +107,7 @@ void displayAmortizedAnalysis(int analysisSize, int analysisCost[], int analysis
     int totalCost = 0;
 
     printf("\n====================================================\n");
-    printf("             AMORTIZED ANALYSIS\n");
+    printf("             AGGREGATE ANALYSIS\n");
     printf("====================================================\n");
 
     printf("\nOperation\tCurrent Size\tTotal Size\tCost\n");

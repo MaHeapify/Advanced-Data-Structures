@@ -125,16 +125,18 @@ void traverse(BTreeNode *node) {
 
 // Get height of the B-Tree
 int height(BTreeNode *node) {
-    if (node == NULL || node->leaf)
+    if (node == NULL || node->leaf) {
         return 0;
+    }
 
     return 1 + height(node->child[0]);
 }
 
 // Display nodes at a given level
 void displayLevel(BTreeNode *node, int level) {
-    if (node == NULL)
+    if (node == NULL) {
         return;
+    }
 
     if (level == 0) {
         printf("[");
@@ -176,8 +178,9 @@ void splitChild(BTree *tree, BTreeNode *parent, int index) {
     // newChild gets t-1 keys from fullChild
     newChild->n = t - 1;
 
-    for (int j = 0; j < t - 1; j++)
+    for (int j = 0; j < t - 1; j++) {
         newChild->keys[j] = fullChild->keys[j + t];
+    }
 
     // If fullChild is not a leaf, move its children as well
     if (!fullChild->leaf) {
@@ -189,7 +192,7 @@ void splitChild(BTree *tree, BTreeNode *parent, int index) {
     // Reduce number of keys in fullChild
     fullChild->n = t - 1;
 
-    // Shift parent's children to the right to make space for new child
+    // Shift parent's children to the right to make space for newChild
     for (int j = parent->n; j >= index + 1; j--) {
         parent->child[j + 1] = parent->child[j];
     }
@@ -197,17 +200,17 @@ void splitChild(BTree *tree, BTreeNode *parent, int index) {
     parent->child[index + 1] = newChild;
 
     // Move parent's keys to the right
-    for (int j = parent->n - 1; j >= index; j--)
+    for (int j = parent->n - 1; j >= index; j--) {
         parent->keys[j + 1] = parent->keys[j];
+    }
 
     // Middle key moves up to parent
-    parent->keys[index] =
-        fullChild->keys[t - 1];
+    parent->keys[index] = fullChild->keys[t - 1];
 
     parent->n++;
 }
 
-// Insert a key into non full node of the B-tree
+// Insert a key into non full node of the B-Tree
 void insertNonFull(BTree *tree, BTreeNode *node, int key){
     int i = node->n - 1;
 
@@ -285,17 +288,18 @@ void insert(BTree *tree, int key) {
 int findKey(BTreeNode *node, int key) {
     int index = 0;
 
-    while (index < node->n &&
-           node->keys[index] < key)
+    while (index < node->n && node->keys[index] < key) {
         index++;
+    }
 
     return index;
 }
 
 // Get predecessor of a key
 int getPredecessor(BTreeNode *node) {
-    while (!node->leaf)
+    while (!node->leaf) {
         node = node->child[node->n];
+    }
 
     return node->keys[node->n - 1];
 }
@@ -532,7 +536,7 @@ void deleteKey(BTree *tree, int key) {
         free(oldRoot);
     }
 
-    printf("Key %d deleted from the B-Tree.\n", key);
+    printf("\nKey %d deleted from the B-Tree.\n", key);
 }
 
 // Free up resources

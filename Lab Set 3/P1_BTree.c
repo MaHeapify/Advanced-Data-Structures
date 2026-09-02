@@ -102,8 +102,10 @@ BTreeNode *search(BTreeNode *node, int key) {
 
 // Traverse the B-Tree
 void traverse(BTreeNode *node) {
-    if (node == NULL)
+    if (node == NULL || node->leaf) {
+        printf("B-Tree is empty! Nothing to traverse.");
         return;
+    }
 
     int i;
 
@@ -291,7 +293,7 @@ int findKey(BTreeNode *node, int key) {
     return index;
 }
 
-// Get predecessor
+// Get predecessor of a key
 int getPredecessor(BTreeNode *node) {
     while (!node->leaf)
         node = node->child[node->n];
@@ -299,7 +301,7 @@ int getPredecessor(BTreeNode *node) {
     return node->keys[node->n - 1];
 }
 
-// Get successor
+// Get successor of a key
 int getSuccessor(BTreeNode *node) {
     while (!node->leaf) {
         node = node->child[0];

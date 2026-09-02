@@ -125,16 +125,18 @@ void traverse(BTreeNode *node) {
 
 // Get height of the B-Tree
 int height(BTreeNode *node) {
-    if (node == NULL || node->leaf)
+    if (node == NULL || node->leaf) {
         return 0;
+    }
 
     return 1 + height(node->child[0]);
 }
 
 // Display nodes at a given level
 void displayLevel(BTreeNode *node, int level) {
-    if (node == NULL)
+    if (node == NULL) {
         return;
+    }
 
     if (level == 0) {
         printf("[");
@@ -286,16 +288,18 @@ int findKey(BTreeNode *node, int key) {
     int index = 0;
 
     while (index < node->n &&
-           node->keys[index] < key)
+           node->keys[index] < key) {
         index++;
+    }
 
     return index;
 }
 
 // Get predecessor of a key
 int getPredecessor(BTreeNode *node) {
-    while (!node->leaf)
+    while (!node->leaf) {
         node = node->child[node->n];
+    }
 
     return node->keys[node->n - 1];
 }
@@ -536,8 +540,7 @@ void deleteKey(BTree *tree, int key) {
 }
 
 // Free up resources
-void freeTree(BTreeNode *node)
-{
+void freeTree(BTreeNode *node) {
     if (node == NULL) {
         return;
     }
@@ -553,8 +556,7 @@ void freeTree(BTreeNode *node)
     free(node);
 }
 
-int main()
-{
+int main() {
     int t;
 
     printf("\nEnter the minimum degree t of the B-Tree: ");

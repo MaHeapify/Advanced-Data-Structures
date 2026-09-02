@@ -292,7 +292,7 @@ int findKey(BTreeNode *node, int key) {
     return index;
 }
 
-// Get predecessor
+// Get predecessor of a key
 int getPredecessor(BTreeNode *node) {
     while (!node->leaf)
         node = node->child[node->n];
@@ -300,7 +300,7 @@ int getPredecessor(BTreeNode *node) {
     return node->keys[node->n - 1];
 }
 
-// Get successor
+// Get successor of a key
 int getSuccessor(BTreeNode *node) {
     while (!node->leaf) {
         node = node->child[0];

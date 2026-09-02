@@ -102,8 +102,9 @@ BTreeNode *search(BTreeNode *node, int key) {
 
 // Traverse the B-Tree
 void traverse(BTreeNode *node) {
-    if (node == NULL)
+    if (node == NULL) {
         return;
+    }
 
     int i;
 

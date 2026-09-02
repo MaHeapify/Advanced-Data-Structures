@@ -525,7 +525,7 @@ void deleteKey(BTree *tree, int key) {
         BTreeNode *oldRoot = tree->root;
 
         if (oldRoot->leaf) {
-            printf("Key %d deleted from the B-Tree.\n", key);
+            printf("\nKey %d deleted from the B-Tree.\n", key);
             return;
         }
 
@@ -540,8 +540,7 @@ void deleteKey(BTree *tree, int key) {
 }
 
 // Free up resources
-void freeTree(BTreeNode *node)
-{
+void freeTree(BTreeNode *node) {
     if (node == NULL) {
         return;
     }
@@ -557,8 +556,7 @@ void freeTree(BTreeNode *node)
     free(node);
 }
 
-int main()
-{
+int main() {
     int t;
 
     printf("\nEnter the minimum degree t of the B-Tree: ");
